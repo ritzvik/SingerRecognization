@@ -1,10 +1,10 @@
+#REF : https://aqibsaeed.github.io/2016-09-03-urban-sound-classification-part-1/
+
 import glob
 import os
 import librosa
 import librosa.display
 import numpy as np 
-import matplotlib.pyplot as plt
-from matplotlib.pyplot import specgram
 import tensorflow as tf 
 import sklearn
 
