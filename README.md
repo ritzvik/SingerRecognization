@@ -8,9 +8,9 @@ Much of the audio processing code is took from https://aqibsaeed.github.io/2016-
 
 There are four .py files:
 
-  recog.py --> vanilla version
-  multirecog.py --> multithreaded version (significantly faster)
-  export_builder.py --> multithreaded version (make model and export)  
+  recog.py --> vanilla version\n
+  multirecog.py --> multithreaded version (significantly faster)\n
+  export_builder.py --> multithreaded version (make model and export)\n
   import_learner.py --> import saved model and run on test data
   
 How To Run (Train real time and test)??
