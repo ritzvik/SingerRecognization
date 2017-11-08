@@ -1,3 +1,8 @@
+#REF : https://aqibsaeed.github.io/2016-09-03-urban-sound-classification-part-1/
+#REF : https://docs.python.org/2/library/multiprocessing.html
+#REF : https://www.tensorflow.org/serving/serving_basic
+#REF : http://cv-tricks.com/tensorflow-tutorial/save-restore-tensorflow-models-quick-complete-tutorial/
+
 import sys
 import glob
 import os
@@ -5,6 +10,7 @@ import librosa
 import numpy as np 
 import tensorflow as tf 
 import sklearn
+from sklearn import metrics
 from multiprocessing import Process, Queue, Lock
 from export_builder import parse, one_hot_encode
 
@@ -26,11 +32,7 @@ def getTestFiles():
 	for i,fname in enumerate(os.listdir()):
 		if fname.startswith('t-') and fname.endswith('.wav'):
 			test_files.append(fname)
-	#
 	return test_files
-
-def singer_index(singer_name,singer_names):
-	return singer_names.index(singer_name)
 
 
 def mainprog():
@@ -46,16 +48,12 @@ def mainprog():
 	#
 	#
 	#
-	#
 	n_dim = ts_features.shape[1]
 	n_classes = len(singer_names)
 	n_hidden_layers = len(n_hidden_units_i)
 	n_hidden_units_i.insert(0,n_dim)
 	sd = 1/np.sqrt(n_dim)
 	#
-	#
-	# X = tf.placeholder(dtype=tf.float32,shape=[None,n_dim])
-	# Y = tf.placeholder(dtype=tf.float32,shape=[None,n_classes])
 	#
 	#
 	sess = tf.Session()
@@ -72,15 +70,15 @@ def mainprog():
 	#
 	#
 	#
-	#
 	relation =  [[singer_names[i],i] for i in range(0,len(singer_names))]
 	print(relation)
 	print(y_true)
 	print(y_pred)
-	p,r,f,s = sklearn.metrics.precision_recall_fscore_support(y_true, y_pred, average='micro')
+	p,r,f,s = metrics.precision_recall_fscore_support(y_true, y_pred, average='micro')
 	print ("F-Score:", round(f,3))
 	#
 	#
 
 if __name__=='__main__':
 	mainprog()
+	#
