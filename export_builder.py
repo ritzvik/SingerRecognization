@@ -8,7 +8,8 @@ import os
 import librosa
 # import librosa.display
 import numpy as np 
-import tensorflow as tf 
+import tensorflow as tf
+from sklearn import metrics
 import sklearn
 from multiprocessing import Process, Queue, Lock
 
@@ -91,6 +92,7 @@ def exportAdditionalData(singer_names,n_hidden_units_i):
 	F.write(str(len(n_hidden_units_i)-1)+'\n')
 	for units in n_hidden_units_i[1:]:
 		F.write(str(units)+'\n')
+	F.close()
 
 
 def main():
@@ -108,27 +110,27 @@ def main():
 	tr_labels = one_hot_encode(tr_labels)
 	#print(ts_labels); print(tr_labels);
 	#
-	training_epochs = 1999
+	training_epochs = 2000
 	n_dim = tr_features.shape[1]
 	n_classes = len(singer_names)
 	n_hidden_layers = int(input('Give no of Hidden Layers : '))
 	n_hidden_units_i = [n_dim]
-
+	#
 	for i in range(0,n_hidden_layers):
 		n_hidden_units_i.append(int(input('Units for Layer %d : '%(i))))
-
+	#
 	sd = 1/np.sqrt(n_dim)
 	learning_rate = 0.01
-
-
-
+	#
+	#
+	#
 	X = tf.placeholder(dtype=tf.float32,shape=[None,n_dim],name='X')
 	Y = tf.placeholder(dtype=tf.float32,shape=[None,n_classes],name='Y')
-
-
+	#
+	#
 	ht = X
 	#hiddenLayerVars = []
-
+	#
 	for i in range(0,n_hidden_layers):
 		W_i = tf.Variable(tf.random_normal([n_hidden_units_i[i],n_hidden_units_i[i+1]], mean = 0, stddev=sd),name='Wh_%d'%(i))
 		b_i = tf.Variable(tf.random_normal([n_hidden_units_i[i+1]], mean = 0, stddev=sd),name='bh_%d'%(i))
@@ -176,7 +178,7 @@ def main():
 	print (relation)
 	print (y_true)
 	print (y_pred)
-	p,r,f,s = sklearn.metrics.precision_recall_fscore_support(y_true, y_pred, average='micro')
+	p,r,f,s = metrics.precision_recall_fscore_support(y_true, y_pred, average='micro')
 	print ("F-Score:", round(f,3))
 	#
 	#
